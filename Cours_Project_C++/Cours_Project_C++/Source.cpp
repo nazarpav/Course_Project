@@ -127,7 +127,7 @@ public:
 class menu
 {
 protected:
-	void Menu_Private(W_W_D &work_with_database, Product *&product, unsigned short &Quantity_Products)
+	void Menu_Private(W_W_D &work_with_database, Product *&product, unsigned short &Quantity_Products,bool &var)
 	{
 		unsigned short choise = 1;
 		char Control_Symbol{};
@@ -139,7 +139,7 @@ protected:
 			"Set product size",
 			"______________",
 			"______________",
-			"______________"
+			"Exit"
 		};
 		while (Control_Symbol != 13)
 		{
@@ -194,7 +194,7 @@ protected:
 			cout << "5\n";
 			break;
 		case 6:
-			cout << "6\n";
+			var = false;
 			break;
 		default:
 			cout << "Eror!!!\n";
@@ -202,9 +202,9 @@ protected:
 		}
 	}
 public:
-	void Menu(W_W_D &work_with_database, Product *&product, unsigned short &Quantity_Products)
+	void Menu(W_W_D &work_with_database, Product *&product, unsigned short &Quantity_Products,bool &var)
 	{
-		Menu_Private(work_with_database, product, Quantity_Products);
+		Menu_Private(work_with_database, product, Quantity_Products,var);
 	}
 };
 
@@ -215,16 +215,13 @@ int main()
 	Product *product = NULL;
 	unsigned short Quantity_Products = 0;
 	W_W_D work_with_database;
-	while (true)
+	bool var = true;
+	while (var)
 	{
 		system("cls");
-		cout << "[ Show ALL Products ]\nEnter ALL Data base\nSet product size\n______________\n______________\n______________\n";
-		Menu.Menu(work_with_database, product, Quantity_Products);
+		cout << "[ Show ALL Products ]\nEnter ALL Data base\nSet product size\n______________\n______________\nExit\n";
+		Menu.Menu(work_with_database, product, Quantity_Products,var);
 	}
-
-
-
-
-	system("pause");
+	
 	return 0;
 }
