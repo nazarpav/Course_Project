@@ -1,3 +1,4 @@
 ﻿  main.cpp
-c:\users\назар\desktop\course project\cours_project_c++\cours_project_c++\main.cpp(173): warning C4101: new_Department: неиспользованная локальная переменная
+c:\users\назар\desktop\course project\cours_project_c++\cours_project_c++\main.cpp(175): warning C4101: new_Department: неиспользованная локальная переменная
+c:\users\назар\desktop\course project\cours_project_c++\cours_project_c++\main.cpp(274): warning C4553: "==": результат выражения не используется; вы хотели использовать "="?
   Cours_Project_C++.vcxproj -> C:\Users\назар\Desktop\course project\Cours_Project_C++\Debug\Cours_Project_C++.exe

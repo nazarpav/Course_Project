@@ -156,13 +156,15 @@ public:
 	void Add_item_Data_Product(Product *&product, unsigned short &Quantity_Products)
 	{
 		Quantity_Products++;
-		/*
-		Product * new_product=new Product[Quantity_Products+1];
+		
+		/*Product * new_product=new Product[Quantity_Products+1];
 		for (unsigned short i = 0; i < Quantity_Products; i++)
 		{
-			new_product[i] = product[i];
+
 		}
-		*/
+			cout<<new_product<<endl;
+			cout<<product<<endl;
+			system("pause");*/
 		product = (Product*)realloc(product, Quantity_Products * sizeof(Product));
 		unsigned short new_Quantity_in_stock;
 		const string block_database = "Bread departmen\t\t1\nPastry Department\t2\nDairy department\t3\nMeat section\t\t4\nSausage department\t5\nFish department\t\t6\nGrocery department\t7\nDepartment of drinks\t8\nSemi-finished products\t9\nFruit and vegetable\t10\n";
@@ -224,42 +226,60 @@ public:
 		cin >> new_Description;
 		product[Quantity_Products - 1].Set_Description(new_Description);
 	}
+	void del_prod(Product *&product, unsigned short &Quantity_Products, string &Departament)
+	{
+
+	}
 	void Del_Product(Product *&product, unsigned short &Quantity_Products)
 	{
+		Quantity_Products++;
+
+		/*Product * new_product=new Product[Quantity_Products+1];
+		for (unsigned short i = 0; i < Quantity_Products; i++)
+		{
+
+		}
+			cout<<new_product<<endl;
+			cout<<product<<endl;
+			system("pause");*/
+		product = (Product*)realloc(product, Quantity_Products * sizeof(Product));
 		string Products_Name;
 		bool tmp = false;
+		string departament;
 		unsigned short index = 0;
+		unsigned short new_Quantity_in_stock;
+		const string block_database = "Bread departmen\t\t1\nPastry Department\t2\nDairy department\t3\nMeat section\t\t4\nSausage department\t5\nFish department\t\t6\nGrocery department\t7\nDepartment of drinks\t8\nSemi-finished products\t9\nFruit and vegetable\t10\n";
 		switch (menu_DB.Get_menu_db(product, Quantity_Products))
 		{
 		case 1:
-
+			departament = "Bread departmen";
 			break;
 		case 2:
-
+			departament = "Pastry Department";
 			break;
 		case 3:
-
+			departament = "Dairy department";
 			break;
 		case 4:
-
+			departament = "Meat section";
 			break;
 		case 5:
-
+			departament = "Sausage department";
 			break;
 		case 6:
-
+			departament = "Fish department";
 			break;
 		case 7:
-
+			departament = "Grocery department";
 			break;
 		case 8:
-
+			departament = "Department of drinks";
 			break;
 		case 9:
-
+			departament = "Semi - finished products";
 			break;
 		case 10:
-
+			departament = "Fruit and vegetable";
 			break;
 		}
 		for (unsigned short i=0; tmp != true;i++)
