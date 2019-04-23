@@ -1,2 +1,5 @@
-﻿  Source.cpp
-  Cours_Project_C++.vcxproj -> C:\Users\pavliuk.itstep\Desktop\course work\Cours_Project_C++\x64\Debug\Cours_Project_C++.exe
+﻿  main.cpp
+c:\users\pavliuk.itstep\desktop\course work\cours_project_c++\cours_project_c++\main.cpp(240): error C2280: 'Product &Product::operator =(const Product &)': attempting to reference a deleted function
+  c:\users\pavliuk.itstep\desktop\course work\cours_project_c++\cours_project_c++\main.cpp(85): note: compiler has generated 'Product::operator =' here
+  c:\users\pavliuk.itstep\desktop\course work\cours_project_c++\cours_project_c++\main.cpp(85): note: 'Product &Product::operator =(const Product &)': function was implicitly deleted because 'Product' has a data member 'Product::Rate_of_conventional_units' of const-qualified non-class type
+  c:\users\pavliuk.itstep\desktop\course work\cours_project_c++\cours_project_c++\main.cpp(24): note: see declaration of 'Product::Rate_of_conventional_units'
