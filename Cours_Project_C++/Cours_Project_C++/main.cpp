@@ -1,17 +1,16 @@
-﻿/*C++
-Ïðåäìåòíà îáëàñòü - â³ää³ë ïðîäóêò³â â ìàãàçèí³.
-Ðîçâ'ÿçóâàí³ çàäà÷³: âèäà÷à çâåäåíü ïðî òîâàðè (îïèñ, ö³íà â ãðí. ³ ó.î., ê³ëüê³ñòü íà ñêëàä³, ìàðêà òîùî) .Ðåàë³çóâàòè íàñòóïí³ ñåðâ³ñè:
-Çàïîâíåííÿ áàçè äàíèõ
-Ïåðåãëÿä óñ³õ äàíèõ
-Äîïîâíåííÿ áàçè äàíèõ íîâèì çàïèñîì
-Âèäàëåííÿ ³ç áàçè äàíèõ
-Óïîðÿäêóâàííÿ ïî ïîëÿõ: òèï òîâàðó, ö³íà
-Ïîøóê: òîâàðó ôàáðèêà-âèðîáíèê ÕÕ
-Âèá³ðêà: ïðèíòåðè çà ö³íîþ íå á³ëüø Y; òîâàðè, ÿêèõ íà ñêëàä³ çàëèøèëîñÿ ìåíøå 5 øòóê
-Êîðåêö³ÿ: çì³íà ö³íè â ãðèâíÿõ, ó çâ'ÿçêó ç³ çì³íîþ êóðñó äîëàðà
-Òàáëè÷íèé çâ³ò: ³íôîðìàö³ÿ ïðî òîâàðè; óïîðÿäêóâàííÿ ïî òèïàõ(îêðåìî - êîâáàñè, ðèáà, îâî÷³ òîùî)
-Äîäàòêîâ³ âèìîãè: ïåðåâ³ðêà íà ââåäåííÿ ö³íè òîâàðó (ïîâèííà áóòè á³ëüøå 0 ãðí.), à òàêîæ íà òå, ùîá ö³íà â ãðí. â³äïîâ³äàëà ö³í³ â ó.î.
-Äëÿ îáðîáêè äàíèõ ñêîðèñòàòèñÿ äèíàì³÷íèì ìàñèâîì ïîêàæ÷èê³â íà ñòðóêòóðè â³äïîâ³äíîãî òèïó. */
+﻿/*Предметна область - відділ продуктів в магазині.
+Розв'язувані задачі: видача зведень про товари (опис, ціна в грн. і у.о., кількість на складі, марка тощо) .Реалізувати наступні сервіси:
+Заповнення бази даних
+Перегляд усіх даних
+Доповнення бази даних новим записом
+Видалення із бази даних
+Упорядкування по полях: тип товару, ціна
+Пошук: товару фабрика-виробник ХХ
+Вибірка: принтери за ціною не більш Y; товари, яких на складі залишилося менше 5 штук
+Корекція: зміна ціни в гривнях, у зв'язку зі зміною курсу долара
+Табличний звіт: інформація про товари; упорядкування по типах(окремо - ковбаси, риба, овочі тощо)
+Додаткові вимоги: перевірка на введення ціни товару (повинна бути більше 0 грн.), а також на те, щоб ціна в грн. відповідала ціні в у.о.
+Для обробки даних скористатися динамічним масивом покажчиків на структури відповідного типу.*/
 #include <iostream>
 #include <string>
 #include <ctime>
@@ -164,14 +163,14 @@ public:
 			cout<<new_product<<endl;
 			cout<<product<<endl;
 			system("pause");*/
-		//product = (Product*)realloc(product, Quantity_Products * sizeof(Product));
+		product = (Product*)realloc(product, Quantity_Products * sizeof(Product));
 		unsigned short new_Quantity_in_stock;
 		const string block_database = "Bread departmen\t\t1\nPastry Department\t2\nDairy department\t3\nMeat section\t\t4\nSausage department\t5\nFish department\t\t6\nGrocery department\t7\nDepartment of drinks\t8\nSemi-finished products\t9\nFruit and vegetable\t10\n";
 		unsigned short new_Cost_in_CU;
 		string new_Manufacturing_plant;
 		string new_Description;
 		string new_Products_Name;
-//		unsigned int new_Department;
+		unsigned int new_Department;
 		switch (menu_DB.Get_menu_db(product, Quantity_Products))
 		{
 		case 1:
@@ -225,22 +224,57 @@ public:
 		cin >> new_Description;
 		product[Quantity_Products - 1].Set_Description(new_Description);
 	}
-	void del_prod(Product *&product, unsigned short &Quantity_Products, string &Departament)
+	void reduct_product(Product *&product, unsigned short &Quantity_Products)
+	{
+		unsigned short new_Quantity_in_stock;
+		unsigned short new_Cost_in_CU;
+		string new_Manufacturing_plant;
+		string new_Description;
+		string new_Products_Name;
+		string departament;
+		const string block_database = "Bread departmen\t\t1\nPastry Department\t2\nDairy department\t3\nMeat section\t\t4\nSausage department\t5\nFish department\t\t6\nGrocery department\t7\nDepartment of drinks\t8\nSemi-finished products\t9\nFruit and vegetable\t10\n";
+		system("cls");
+		cout << "Enter Departament\t\t"<<block_database<<"\n -> ";
+		cin >> departament;
+		cout << "Enter name product> \n" << product << "\n";
+		cin >> new_Products_Name;
+		product[Quantity_Products - 1].Set_Products_Name(new_Products_Name);
+
+		cout << "Enter Quantity in stock> ";
+		cin >> new_Quantity_in_stock;
+		product[Quantity_Products - 1].Set_Quantity_in_stock(new_Quantity_in_stock);
+
+		cout << "Enter Cost in CU> ";
+		cin >> new_Cost_in_CU;
+		product[Quantity_Products - 1].Set_Cost_in_CU(new_Cost_in_CU);
+
+		cout << "Enter Manufacturingplant> ";
+		cin >> new_Manufacturing_plant;
+		product[Quantity_Products - 1].Set_Manufacturing_plant(new_Manufacturing_plant);
+
+		cout << "Enter Description product> ";
+		cin >> new_Description;
+		product[Quantity_Products - 1].Set_Description(new_Description);
+	}
+	void search_product(Product *&product, unsigned short &Quantity_Products, unsigned short &Departament)
 	{
 
 	}
 	void Del_Product(Product *&product, unsigned short &Quantity_Products)
 	{
 		Quantity_Products++;
-
 		Product * new_product = new Product[Quantity_Products + 1];
 		for (unsigned short i = 0; i < Quantity_Products; i++)
 		{
-
-			new_product[i] = product[i];
+			new_product[i].Set_Cost_in_CU(product[i].Get_Cost_in_CU());
+			new_product[i].Set_Department(product[i].Get_Department());
+			new_product[i].Set_Description(product[i].Get_Description());
+			new_product[i].Set_Manufacturing_plant(product[i].Get_Manufacturing_plant());
+			new_product[i].Set_Products_Name(product[i].Get_Products_Name());
+			new_product[i].Set_Quantity_in_stock(product[i].Get_Quantity_in_stock());
 		}
 			system("pause");
-		product = (Product*)realloc(product, Quantity_Products * sizeof(Product));
+		//product = (Product*)realloc(product, Quantity_Products * sizeof(Product));
 		string Products_Name;
 		bool tmp = false;
 		string departament;
@@ -287,7 +321,7 @@ public:
 			if (Products_Name == product[i].Get_Products_Name())
 			{
 				tmp = true;
-				index = i;
+				index == i;
 			}
 		}
 		if (tmp == true)
@@ -310,11 +344,14 @@ public:
 class menu
 {
 protected:
+	string text_to_search{};
+	Menu_database menu_DB_;
+	unsigned short departament = 0;
 	void Menu_Private(W_W_D &work_with_database, Product *&product, unsigned short &Quantity_Products, bool &var)
 	{
 		unsigned short choise = 1;
 		char Control_Symbol{};
-		const unsigned short size = 6;
+		const unsigned short size = 7;
 		string menu[size]
 		{
 			"Show ALL Products",
@@ -322,6 +359,7 @@ protected:
 			"Set product size",
 			"Delete product",
 			"Redact product",
+			"Search product",
 			"Exit"
 		};
 
@@ -377,9 +415,16 @@ protected:
 			work_with_database.Del_Product(product, Quantity_Products);
 			break;
 		case 5:
-			cout << "5\n";
+			/*cout << "[ Bread department ]\nPastry Department\nDairy department\nMeat section\nSausage department\nFish department\nGrocery department\nDepartment of drinks\nDepartment of semi - finished products\nFruit and vegetable department\n";
+			departament = menu_DB_.Get_menu_db(product, Quantity_Products);*/
+			work_with_database.reduct_product(product, Quantity_Products);
 			break;
 		case 6:
+			cout << "Enter text to searchs-> \n";
+			cin >> text_to_search;
+			work_with_database.search_product(product, Quantity_Products, departament);
+			break;
+		case 7:
 			var = false;
 			break;
 		default:
@@ -402,12 +447,10 @@ int main()
 	unsigned short Quantity_Products = 0;
 	W_W_D work_with_database;
 	bool var = true;
-	cout << sizeof(Product);
-	system("pause");
 	while (var)
 	{
 		system("cls");
-		cout << "[ Show ALL Products ]\nAdd item Data base\nSet product size\nDelete product\nRedact product\nExit\n";
+		cout << "[ Show ALL Products ]\nAdd item Data base\nSet product size\nDelete product\nRedact product\nSearch product\nExit\n";
 		Menu.Menu(work_with_database, product, Quantity_Products, var);
 	}
 
