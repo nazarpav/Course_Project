@@ -1,5 +1,5 @@
 ﻿  main.cpp
-c:\users\pavliuk.itstep\desktop\course work\cours_project_c++\cours_project_c++\main.cpp(173): warning C4101: 'new_Department': unreferenced local variable
-c:\users\pavliuk.itstep\desktop\course work\cours_project_c++\cours_project_c++\main.cpp(324): warning C4553: '==': result of expression not used; did you intend '='?
-c:\users\pavliuk.itstep\desktop\course work\cours_project_c++\cours_project_c++\main.cpp(282): warning C4101: 'new_Quantity_in_stock': unreferenced local variable
-  Cours_Project_C++.vcxproj -> C:\Users\pavliuk.itstep\Desktop\course work\Cours_Project_C++\x64\Debug\Cours_Project_C++.exe
+c:\users\temp\desktop\course\cours_project_c++\cours_project_c++\main.cpp(182): warning C4101: 'new_Department': unreferenced local variable
+c:\users\temp\desktop\course\cours_project_c++\cours_project_c++\main.cpp(382): warning C4553: '==': result of expression not used; did you intend '='?
+c:\users\temp\desktop\course\cours_project_c++\cours_project_c++\main.cpp(340): warning C4101: 'new_Quantity_in_stock': unreferenced local variable
+  Cours_Project_C++.vcxproj -> C:\Users\TEMP\Desktop\course\Cours_Project_C++\x64\Debug\Cours_Project_C++.exe

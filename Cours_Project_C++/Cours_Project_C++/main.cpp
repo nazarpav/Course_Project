@@ -16,12 +16,13 @@
 #include <ctime>
 #include <fstream>
 #include <conio.h>
+#include <windows.h>
 using namespace std;
 class  Product
 {
 private:
 	const unsigned short Rate_of_conventional_units = 20;
-	unsigned short Cost_in_UAN = Cost_in_CU * Rate_of_conventional_units;
+	unsigned short Cost_in_UAN;
 	string Department;
 	string Manufacturing_plant;
 	string Description;
@@ -29,6 +30,10 @@ private:
 	unsigned short Quantity_in_stock;
 	unsigned short Cost_in_CU;
 public:
+	void Set_UAN()
+	{
+		Cost_in_UAN = Cost_in_CU * Rate_of_conventional_units;
+	}
 	void Set_Quantity_in_stock(int new_Quantity_in_stock)
 	{
 		this->Quantity_in_stock = new_Quantity_in_stock;
@@ -40,6 +45,7 @@ public:
 	void Set_Cost_in_CU(int new_Cost_in_CU)
 	{
 		this->Cost_in_CU = new_Cost_in_CU;
+		Set_UAN();
 	}
 	void Set_Manufacturing_plant(string new_Manufacturing_plant)
 	{
@@ -156,21 +162,27 @@ public:
 	{
 		Quantity_Products++;
 
-		/*Product * new_product=new Product[Quantity_Products+1];
-		for (unsigned short i = 0; i < Quantity_Products; i++)
+		Product * new_product = new Product[Quantity_Products + 1];
+		for (unsigned short i = 0; i < Quantity_Products - 1; i++)
 		{
+			new_product[i].Set_Cost_in_CU(product[i].Get_Cost_in_CU());
+			new_product[i].Set_Department(product[i].Get_Department());
+			new_product[i].Set_Description(product[i].Get_Description());
+			new_product[i].Set_Manufacturing_plant(product[i].Get_Manufacturing_plant());
+			new_product[i].Set_Products_Name(product[i].Get_Products_Name());
+			new_product[i].Set_Quantity_in_stock(product[i].Get_Quantity_in_stock());
 		}
-			cout<<new_product<<endl;
-			cout<<product<<endl;
-			system("pause");*/
-		product = (Product*)realloc(product, Quantity_Products * sizeof(Product));
+		delete[] product;
+		product = new_product;
 		unsigned short new_Quantity_in_stock;
-		const string block_database = "Bread departmen\t\t1\nPastry Department\t2\nDairy department\t3\nMeat section\t\t4\nSausage department\t5\nFish department\t\t6\nGrocery department\t7\nDepartment of drinks\t8\nSemi-finished products\t9\nFruit and vegetable\t10\n";
+		const string block_database = "[ Bread department ]\nPastry Department\nDairy department\nMeat section\nSausage department\nFish department\nGrocery department\nDepartment of drinks\nDepartment of semi - finished products\nFruit and vegetable department\n";
 		unsigned short new_Cost_in_CU;
 		string new_Manufacturing_plant;
 		string new_Description;
 		string new_Products_Name;
 		unsigned int new_Department;
+		system("cls");
+		cout << block_database;
 		switch (menu_DB.Get_menu_db(product, Quantity_Products))
 		{
 		case 1:
@@ -204,7 +216,8 @@ public:
 			product[Quantity_Products - 1].Set_Department("Fruit and vegetable");
 			break;
 		}
-		cout << "Enter name product> \n" << product << "\n";
+		system("cls");
+		cout << "Enter name product> \n";
 		cin >> new_Products_Name;
 		product[Quantity_Products - 1].Set_Products_Name(new_Products_Name);
 
@@ -232,29 +245,75 @@ public:
 		string new_Description;
 		string new_Products_Name;
 		string departament;
-		const string block_database = "Bread departmen\t\t1\nPastry Department\t2\nDairy department\t3\nMeat section\t\t4\nSausage department\t5\nFish department\t\t6\nGrocery department\t7\nDepartment of drinks\t8\nSemi-finished products\t9\nFruit and vegetable\t10\n";
+		const string block_database = "[ Bread department ]\nPastry Department\nDairy department\nMeat section\nSausage department\nFish department\nGrocery department\nDepartment of drinks\nDepartment of semi - finished products\nFruit and vegetable department\n";
 		system("cls");
-		cout << "Enter Departament\t\t"<<block_database<<"\n -> ";
-		cin >> departament;
-		cout << "Enter name product> \n" << product << "\n";
+		cout << block_database;
+		switch (menu_DB.Get_menu_db(product, Quantity_Products))
+		{
+		case 1:
+			departament="Bread departmen";
+			break;
+		case 2:
+			departament = "Pastry Department";
+			break;
+		case 3:
+			departament = "Dairy department";
+			break;
+		case 4:
+			departament = "Meat section";
+			break;
+		case 5:
+			departament = "Sausage department";
+			break;
+		case 6:
+			departament = "Fish department";
+			break;
+		case 7:
+			departament = "Grocery department";
+			break;
+		case 8:
+			departament = "Department of drinks";
+			break;
+		case 9:
+			departament = "Semi - finished products";
+			break;
+		case 10:
+			departament = "Fruit and vegetable";
+			break;
+		}
+		system("cls");
+		string search_name_product{};
+		cout << "Enter name product> \n";
+		cin >> search_name_product;
+		unsigned short iterator = 0;
+		for (unsigned short i = 0; i < Quantity_Products; i++)
+		{
+			if (product[i].Get_Products_Name() == search_name_product && departament == product[i].Get_Department())
+			{
+				iterator = i;
+				break;
+			}
+		}
+		system("cls");
+		cout << "Enter new name product> \n";
 		cin >> new_Products_Name;
-		product[Quantity_Products - 1].Set_Products_Name(new_Products_Name);
+		product[iterator].Set_Products_Name(new_Products_Name);
 
-		cout << "Enter Quantity in stock> ";
+		cout << "Enter new Quantity in stock> ";
 		cin >> new_Quantity_in_stock;
-		product[Quantity_Products - 1].Set_Quantity_in_stock(new_Quantity_in_stock);
+		product[iterator].Set_Quantity_in_stock(new_Quantity_in_stock);
 
-		cout << "Enter Cost in CU> ";
+		cout << "Enter new Cost in CU> ";
 		cin >> new_Cost_in_CU;
-		product[Quantity_Products - 1].Set_Cost_in_CU(new_Cost_in_CU);
+		product[iterator].Set_Cost_in_CU(new_Cost_in_CU);
 
-		cout << "Enter Manufacturingplant> ";
+		cout << "Enter new Manufacturingplant> ";
 		cin >> new_Manufacturing_plant;
-		product[Quantity_Products - 1].Set_Manufacturing_plant(new_Manufacturing_plant);
+		product[iterator].Set_Manufacturing_plant(new_Manufacturing_plant);
 
-		cout << "Enter Description product> ";
+		cout << "Enter new Description product> ";
 		cin >> new_Description;
-		product[Quantity_Products - 1].Set_Description(new_Description);
+		product[iterator].Set_Description(new_Description);
 	}
 	void search_product(Product *&product, unsigned short &Quantity_Products, unsigned short &Departament)
 	{
@@ -264,23 +323,10 @@ public:
 	{
 		Quantity_Products++;
 		Product * new_product = new Product[Quantity_Products + 1];
-		for (unsigned short i = 0; i < Quantity_Products; i++)
-		{
-			new_product[i].Set_Cost_in_CU(product[i].Get_Cost_in_CU());
-			new_product[i].Set_Department(product[i].Get_Department());
-			new_product[i].Set_Description(product[i].Get_Description());
-			new_product[i].Set_Manufacturing_plant(product[i].Get_Manufacturing_plant());
-			new_product[i].Set_Products_Name(product[i].Get_Products_Name());
-			new_product[i].Set_Quantity_in_stock(product[i].Get_Quantity_in_stock());
-		}
-			system("pause");
-		//product = (Product*)realloc(product, Quantity_Products * sizeof(Product));
-		string Products_Name;
-		bool tmp = false;
 		string departament;
-		unsigned short index = 0;
-		unsigned short new_Quantity_in_stock;
-		const string block_database = "Bread departmen\t\t1\nPastry Department\t2\nDairy department\t3\nMeat section\t\t4\nSausage department\t5\nFish department\t\t6\nGrocery department\t7\nDepartment of drinks\t8\nSemi-finished products\t9\nFruit and vegetable\t10\n";
+		const string block_database = "[ Bread department ]\nPastry Department\nDairy department\nMeat section\nSausage department\nFish department\nGrocery department\nDepartment of drinks\nDepartment of semi - finished products\nFruit and vegetable department\n";
+		system("cls");
+		cout << block_database;
 		switch (menu_DB.Get_menu_db(product, Quantity_Products))
 		{
 		case 1:
@@ -314,27 +360,42 @@ public:
 			departament = "Fruit and vegetable";
 			break;
 		}
-		for (unsigned short i = 0; tmp != true; i++)
+		system("cls");
+		string search_name_product{};
+		cout << "Enter name product> \n";
+		cin >> search_name_product;
+		unsigned short iteratorr = 0;
+		for (unsigned short i = 0; i < Quantity_Products; i++)
 		{
-			cout << "Enter name product> \n" << product << "\n";
-			cin >> Products_Name;
-			if (Products_Name == product[i].Get_Products_Name())
+			if (product[i].Get_Products_Name() == search_name_product && departament == product[i].Get_Department())
 			{
-				tmp = true;
-				index == i;
+				iteratorr = i;
+				cout << "NOT name!\n";
+				Sleep(1000);
 			}
 		}
-		if (tmp == true)
+		system("cls");
+		cout << "Realy delete this product?\n";
+		for (unsigned short i = iteratorr; i < 1; i++)
 		{
-
+			cout << "ALL Products>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>\n" << "Departament => " << product[i].Get_Department() << "\nProduct > " << product[i].Get_Products_Name() << "\nCost in CU > " << product[i].Get_Cost_in_CU() << "\nCost in UAN > " << product[i].Get_Cost_in_UAN() << "\nQantity in stok> " << product[i].Get_Quantity_in_stock() << "\nManufacturing plant> " << product[i].Get_Manufacturing_plant() << "\nDescription>" << product[i].Get_Description() << endl;
 		}
-		//product[Quantity_Products - 1].Set_Products_Name(Products_Name);
+		char var{};
+		cout << endl; 
+		cin >> var;
+		if (var == 'y')
+		{
+			system("cls");
+		}
+		else if(var == 'n')
+		{
+			cout << "Operation canceled";
+		}
 	}
 	void Show_Product(Product *&product, unsigned short &Quantity_Products)
 	{
 		for (unsigned short i = 0; i < Quantity_Products; i++)
 		{
-			cout << product << endl;
 			cout << "ALL Products>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>\n" << "Departament => " << product[i].Get_Department() << "\nProduct > " << product[i].Get_Products_Name() << "\nCost in CU > " << product[i].Get_Cost_in_CU() << "\nCost in UAN > " << product[i].Get_Cost_in_UAN() << "\nQantity in stok> " << product[i].Get_Quantity_in_stock() << "\nManufacturing plant> " << product[i].Get_Manufacturing_plant() << "\nDescription>" << product[i].Get_Description() << endl;
 			system("pause");
 		}
