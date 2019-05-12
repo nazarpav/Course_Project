@@ -1,0 +1,46 @@
+#syntax VVVVV (All department names can be found below.)
+#(#)-comment !!!The character of the beginning of the comment must be at the beginning of the line, otherwise it will not work:(!!!
+#(~)- end data product
+#(.#)-end all database
+####################################################################
+Bread department
+1
+1
+1.000000
+1
+1
+~
+Bread department
+bread
+10
+2.230000
+12
+1
+~
+.#
+####################################################################
+1 - "Departament"
+2 - "Products_name"
+3 - "Quantity in stock"
+4 - "Cost in CU"
+5 - "Manufacturing plant"
+6 - "Description"
+
+PS.This is all department names |
+								|
+								v
+
+								begin
+								v
+								Bread departmen
+								Pastry Department
+								Dairy department
+								Meat section
+								Sausage department
+								Fish department
+								Grocery department
+								Department of drinks
+								Semi - finished products
+								Fruit and vegetable
+								^
+								end.
