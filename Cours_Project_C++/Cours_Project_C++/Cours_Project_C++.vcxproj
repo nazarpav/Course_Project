@@ -20,9 +20,16 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Menu.cpp" />
+    <ClCompile Include="Menu_DB.cpp" />
+    <ClCompile Include="Product.cpp" />
+    <ClCompile Include="work_with_database.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="database.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="work_with_database.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>
