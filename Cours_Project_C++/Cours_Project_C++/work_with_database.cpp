@@ -1,16 +1,175 @@
-#include"work_with_database.h"
+ #include"work_with_database.h"
 #include <iostream>
 #include <string>
 #include <fstream>
 #include <conio.h>
 #include <windows.h>
 using namespace std;
-	void W_W_D::Get_Memory(Product *&product, unsigned short &Quantity_Products)
+unsigned short W_W_D::template_menu(string menu[],unsigned short size)
+{
+	for (unsigned short i = 0; i < size; i++)
 	{
-		product = new Product[Quantity_Products];
+		if (i == 0)
+		{
+		cout<<"[ "<<menu[i]<<" ]"<<endl;
+		continue;
+		}
+		cout<<menu[i]<<endl;
 	}
-	void W_W_D::Add_item_Data_Product(Product *&product, unsigned short &Quantity_Products)
+	unsigned short choise = 1;
+	char Control_Symbol{};
+	while (Control_Symbol != 13)
 	{
+		Control_Symbol = _getch();
+		if (Control_Symbol != 72 && Control_Symbol != 80)
+		{
+			continue;
+		}
+		else
+		{
+			Control_Symbol == 72 ? choise-- : choise++;
+			if (choise == 0)
+			{
+				choise++;
+				continue;
+			}
+			else if (choise > size)
+			{
+				choise--;
+				continue;
+			}
+		}
+		system("cls");
+		for (unsigned short i = 0; i < size; i++)
+		{
+			if (i + 1 == choise)
+			{
+				cout << "[ " << menu[i] << " ]" << endl;
+				continue;
+			}
+			cout << menu[i] << endl;
+		}
+	}
+	return choise;
+}
+void W_W_D::write_block_database(Product *&product,unsigned short i)
+{
+	cout << "\n==================================================================================================\n" << "Departament => " << product[i].Get_Department() << "\nProduct > " << product[i].Get_Products_Name() << "\nCost in CU > " << product[i].Get_Cost_in_CU() << "\nCost in UAN > " << product[i].Get_Cost_in_UAN() << "\nQantity in stok> " << product[i].Get_Quantity_in_stock() << "\nManufacturing plant> " << product[i].Get_Manufacturing_plant() << "\nDescription>" << product[i].Get_Description() << "\n==================================================================================================\n " << endl;
+}
+void W_W_D::Sampling_products(Product *&product, unsigned short &Quantity_Products)
+{
+	system("cls");
+	const unsigned short size = 4;
+	string menu[size]
+	{
+		"Quantity in stock",
+		"Costs",
+		"Manufacture plant",
+		"Department"
+	};
+	string  manufacture_plant_{};
+	unsigned short from = 0, to = 0;
+	string Department{};
+	switch (template_menu(menu, size))
+	{
+	case 1:
+		system("cls");
+		cout << "Please indicate the span\n\nFrom(currency=\"CU\")>";
+		cin >> from;
+		cout << "To(currency=\"CU\")>";
+		cin >> to;
+		system("cls");
+		for (unsigned short i = 0; i < Quantity_Products; i++)
+		{
+			if (product[i].Get_Quantity_in_stock() >= from && product[i].Get_Quantity_in_stock() <= to)
+			{
+				write_block_database(product,i);
+			}
+		}
+		system("pause");
+		break;
+	case 2:
+		system("cls");
+		cout << "Please indicate the span\n\nFrom>";
+		cin >> from;
+		cout << "To>";
+		cin >> to;
+		system("cls");
+		for (unsigned short i = 0; i < Quantity_Products; i++)
+		{
+			if (product[i].Get_Cost_in_CU() >= from && product[i].Get_Cost_in_CU() <= to)
+			{
+				write_block_database(product, i);
+			}
+		}
+		system("pause");
+		break;
+	case 3:
+		system("cls");
+		cout << "Please enter manufacture plant>";
+		cin.ignore();
+		cin.sync();
+		getline(std::cin, manufacture_plant_);
+		system("cls");
+		for (unsigned short i = 0; i < Quantity_Products; i++)
+		{
+			if (product[i].Get_Manufacturing_plant() == manufacture_plant_)
+			{
+				write_block_database(product, i);
+			}
+		}
+		system("pause");
+		break;
+	case 4:
+		system("cls");
+		switch (menu_DB.Get_menu_db(product, Quantity_Products))
+		{
+		case 1:
+			Department = "Bread department";
+			break;
+		case 2:
+			Department = "Pastry Department";
+			break;
+		case 3:
+			Department = "Dairy department";
+			break;
+		case 4:
+			Department = "Meat section";
+			break;
+		case 5:
+			Department = "Sausage department";
+			break;
+		case 6:
+			Department = "Fish department";
+			break;
+		case 7:
+			Department = "Grocery department";
+			break;
+		case 8:
+			Department = "Department of drinks";
+			break;
+		case 9:
+			Department = "Semi - finished products";
+			break;
+		case 10:
+			Department = "Fruit and vegetable";
+			break;
+		}
+		system("cls");
+		for (unsigned short i = 0; i < Quantity_Products; i++)
+		{
+			if (product[i].Get_Department() == Department)
+			{
+				write_block_database(product, i);
+			}
+		}
+		system("pause");
+		break;
+	}
+
+}
+void W_W_D::Add_item_Data_Product(Product *&product, unsigned short &Quantity_Products)
+{
 		Quantity_Products++;
 
 		Product * new_product = new Product[Quantity_Products + 1];
@@ -26,11 +185,9 @@ using namespace std;
 		delete[] product;
 		product = new_product;
 		unsigned short new_Quantity_in_stock=0;
-		const string block_database = "[ Bread department ]\nPastry Department\nDairy department\nMeat section\nSausage department\nFish department\nGrocery department\nDepartment of drinks\nSemi - finished products\nFruit and vegetable\n";
 		float new_Cost_in_CU=-1;
 		string buf{};
 		system("cls");
-		cout << block_database;
 		switch (menu_DB.Get_menu_db(product, Quantity_Products))
 		{
 		case 1:
@@ -65,8 +222,8 @@ using namespace std;
 			break;
 		}
 		system("cls");
-		cout << "(\"!!q\" - Exit)\n\nEnter name product>\n";
-		cin.ignore();
+		cout << "(\"!q\" - Exit)\n\nEnter name product>\n";
+		cin.sync();
 		getline(std::cin, buf);
 		if (buf == "!q")
 		{
@@ -87,11 +244,12 @@ using namespace std;
 
 		cout << "Enter Manufacturingplant> ";
 		cin.ignore();
+		cin.sync();
 		getline(std::cin, buf);
 		product[Quantity_Products - 1].Set_Manufacturing_plant(buf);
 		
 		cout << "Enter Description product> ";
-		cin.ignore();
+		cin.sync();
 		getline(std::cin,buf);
 		product[Quantity_Products - 1].Set_Description(buf);
 	}
@@ -99,9 +257,7 @@ using namespace std;
 	{
 		string department;
 		string buf{};
-		const string block_database = "[ Bread department ]\nPastry Department\nDairy department\nMeat section\nSausage department\nFish department\nGrocery department\nDepartment of drinks\nSemi - finished products\nFruit and vegetable\n";
 		system("cls");
-		cout << block_database;
 		switch (menu_DB.Get_menu_db(product, Quantity_Products))
 		{
 		case 1:
@@ -138,7 +294,8 @@ using namespace std;
 		system("cls");
 		string name_product{};
 		cout << "(\"!q\" - Exit)\n\nEnter name product> \n";
-		cin >> name_product;
+		cin.sync();
+		getline(std::cin,name_product);
 		if (name_product == "!q")
 		{
 			return;
@@ -160,13 +317,15 @@ using namespace std;
 		}
 		if (flag == true)
 		{
+			cout << char(7);
 			cout << "Eror, check name or department\n";
-			Sleep(2000);
+			Sleep(3000);
 			return;
 		}
 		system("cls");
 		cout << "(\"!end\" - Finish editing)\n(\"!skip\" - Skip)\nAttention, an incorrectly entered keyword will lead to a program crash!!!\n\nOld data>"<<product->Get_Products_Name()<<"\nEnter new name product>";
-		cin >> buf;
+		cin.sync();
+		getline(std::cin,buf);
 		if (buf == "!end")
 		{
 			return;
@@ -176,7 +335,8 @@ using namespace std;
 			product[iterator].Set_Products_Name(buf);
 		}
 		cout << "Old data>" << product->Get_Quantity_in_stock() << "\nEnter new Quantity in stock> ";
-		cin >> buf;
+		cin.sync();
+		getline(std::cin, buf);
 		if (buf == "!end")
 		{
 			return;
@@ -186,7 +346,8 @@ using namespace std;
 			product[iterator].Set_Quantity_in_stock(stoi(buf));
 		}
 		cout << "Old data>" << product->Get_Cost_in_CU() << "\nEnter new Cost in CU> ";
-		cin >> buf;
+		cin.sync();
+		getline(std::cin, buf);
 		if (buf == "!end")
 		{
 			return;
@@ -196,7 +357,8 @@ using namespace std;
 			product[iterator].Set_Cost_in_CU(stof(buf));
 		}
 		cout << "Old data>" << product->Get_Manufacturing_plant() << "\nEnter new Manufacturingplant> ";
-		cin >> buf;
+		cin.sync();
+		getline(std::cin, buf);
 		if (buf == "!end")
 		{
 			return;
@@ -206,7 +368,8 @@ using namespace std;
 			product[iterator].Set_Manufacturing_plant(buf);
 		}
 		cout << "Old data > " << product->Get_Description() << "\nEnter new Description product> ";
-		cin >> buf;
+		cin.sync();
+		getline(std::cin, buf);
 		if (buf == "!end")
 		{
 			return;
@@ -222,12 +385,13 @@ using namespace std;
 		string products_found{};
 		string search_{};
 		cout << "Enter text to search database-> ";
-		cin >> search_;
+		cin.sync();
+		getline(std::cin,search_);
 		for (unsigned short i = 0; i < Quantity_Products; i++)
 		{
 			if (to_string(product[i].Get_Cost_in_CU()) == search_ || to_string(product[i].Get_Cost_in_UAN()) == search_ || product[i].Get_Department() == search_ || product[i].Get_Description() == search_ || product[i].Get_Manufacturing_plant() == search_ || product[i].Get_Products_Name() == search_ || to_string(product[i].Get_Quantity_in_stock()) == search_)
 			{
-				cout << "Departament => " << product[i].Get_Department() << "\nProduct > " << product[i].Get_Products_Name() << "\nCost in CU > " << product[i].Get_Cost_in_CU() << "\nCost in UAN > " << product[i].Get_Cost_in_UAN() << "\nQantity in stok> " << product[i].Get_Quantity_in_stock() << "\nManufacturing plant> " << product[i].Get_Manufacturing_plant() << "\nDescription>" << product[i].Get_Description() << endl;
+				write_block_database(product, i);
 			}
 		}
 		system("pause");
@@ -235,9 +399,7 @@ using namespace std;
 	void W_W_D::Del_Product(Product *&product, unsigned short &Quantity_Products)
 	{
 		string departament;
-		const string block_database = "[ Bread department ]\nPastry Department\nDairy department\nMeat section\nSausage department\nFish department\nGrocery department\nDepartment of drinks\nSemi - finished products\nFruit and vegetable\n";
 		system("cls");
-		cout << block_database;
 		switch (menu_DB.Get_menu_db(product, Quantity_Products))
 		{
 		case 1:
@@ -274,7 +436,8 @@ using namespace std;
 		system("cls");
 		string search_name_product{};
 		cout << "(\"!q\" - Exit)\n\nEnter name product> \n";
-		cin >> search_name_product;
+		cin.sync();
+		getline(std::cin, search_name_product);
 		if (search_name_product == "!q")
 		{
 			return;
@@ -308,40 +471,32 @@ using namespace std;
 		system("cls");
 		if (check_name == true)
 		{
+			cout << char(7);
 			cout << "Product-> " << search_name_product << " not foud in the " << departament << " !!!please check input data\n";
-			Sleep(1000);
-			cout << ". ";
-			Sleep(1000);
-			cout << ". ";
-			Sleep(1000);
-			cout << ". ";
-			Sleep(1000);
-			cout << ". ";
-			Sleep(1000);
-			cout << ". ";
+			for (unsigned short i = 0; i < 4; i++)
+			{
+				cout << ".";
+				Sleep(1000);
+			}
 			system("cls");
 			return;
 		}
 		else if (check_name == false && check_departament == true)
 		{
+			cout << char(7);
 			cout << "This product-> " << search_name_product << " not part of the " << departament << " !!!please check input data\n";
-			Sleep(1000);
-			cout << ". ";
-			Sleep(1000);
-			cout << ". ";
-			Sleep(1000);
-			cout << ". ";
-			Sleep(1000);
-			cout << ". ";
-			Sleep(1000);
-			cout << ". ";
+			for (unsigned short i = 0; i < 4; i++)
+			{
+				cout << ".";
+				Sleep(1000);
+			}
 			system("cls");
 			return;
 		}
-		cout << "Realy delete this product?\n\n";
+		cout << "Realy delete this product?\n\t\t(y/n)\n";
 		for (unsigned short i = iteratorr; i < 1; i++)
 		{
-			cout << "Departament => " << product[i].Get_Department() << "\nProduct name > " << product[i].Get_Products_Name() << "\nCost in CU > " << product[i].Get_Cost_in_CU() << "\nCost in UAN > " << product[i].Get_Cost_in_UAN() << "\nQantity in stok> " << product[i].Get_Quantity_in_stock() << "\nManufacturing plant> " << product[i].Get_Manufacturing_plant() << "\nDescription>" << product[i].Get_Description() << "\n\n(y/n)>";
+			write_block_database(product, i);
 		}
 		char var{};
 		cin >> var;
@@ -381,16 +536,30 @@ using namespace std;
 		cout << "ALL Products>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>\n";
 		for (unsigned short i = 0; i < Quantity_Products; i++)
 		{
-			cout << "\n==================================================================================================\n" << "Departament => " << product[i].Get_Department() << "\nProduct > " << product[i].Get_Products_Name() << "\nCost in CU > " << product[i].Get_Cost_in_CU() << "\nCost in UAN > " << product[i].Get_Cost_in_UAN() << "\nQantity in stok> " << product[i].Get_Quantity_in_stock() << "\nManufacturing plant> " << product[i].Get_Manufacturing_plant() << "\nDescription>" << product[i].Get_Description() <<"\n==================================================================================================\n "<< endl;
+			write_block_database(product, i);
 		}
 		system("pause");
 	}
 	void W_W_D::write_down_data(Product *&product, unsigned short &Quantity_Products)
 	{
+		system("cls");
 		unsigned short var = 0;
 		string path = "database.txt";
-		cout << "Use standard file - 1\nUse another file - 2\nExit - 0\n>";
-		cin >> var;
+		if (Quantity_Products == 0)
+		{
+			system("cls");
+			cout << char(7);
+			cout << "\t\tWARNING!!!\nYour local database is empty.!";
+			Sleep(3000);
+			return;
+		}
+		const unsigned short size = 3;
+		string menu[size]{ "Use standard file","Use another file","Exit" };
+		var = template_menu(menu, size);
+		if (var == 3)
+		{
+			return;
+		}
 		if (var == 2)
 		{
 			cout << "Enter path> ";
@@ -401,8 +570,9 @@ using namespace std;
 			return;
 		}
 		system("cls");
-		cout << "Clean file and write your locate database - 1\nAdd your locate database to file - 2\n::";
-		cin >> var;
+		const unsigned short size2 = 3;
+		string menu2[size2]{ "Clean file and write your locate database","Add your locate database to file","Exit"};
+		var = template_menu(menu2, size2);
 		ofstream write_file;
 		if (var == 1)
 		{
@@ -437,74 +607,142 @@ using namespace std;
 		}
 		else if (var == 2)
 		{
-			string tmp_DB{};
-			string tmp_DB_2{};
-			string data;
-			ifstream read_file;
-			read_file.open(path);
-			while (true)
+		string tmp_DB{};
+		string tmp_DB_2{};
+		string data;
+		ifstream read_file;
+		read_file.open(path);
+		while (true)
+		{
+			getline(read_file, data);
+			if (data == ".#")
 			{
-				getline(read_file, data);
-				if (data == ".#")
-				{
-					break;
-				}
-				tmp_DB += data;
-				tmp_DB += "\n";
+				break;
 			}
-			for (unsigned short i = 0; i < Quantity_Products; i++)
-			{
-				tmp_DB += product[i].Get_Department();
-				tmp_DB += "\n";
-				tmp_DB += product[i].Get_Products_Name();
-				tmp_DB += "\n";
-				tmp_DB += to_string(product[i].Get_Quantity_in_stock());
-				tmp_DB += "\n";
-				tmp_DB += to_string(product[i].Get_Cost_in_CU());
-				tmp_DB += "\n";
-				tmp_DB += product[i].Get_Manufacturing_plant();
-				tmp_DB += "\n";
-				tmp_DB += product[i].Get_Description();
-				tmp_DB += "\n~\n";
-			}
-			tmp_DB += ".#\n";
-			while (getline(read_file, data))
-			{
-				tmp_DB += data;
-				tmp_DB += "\n";
-			}
-			read_file.close();
-			write_file.open(path);
-			cout << tmp_DB << endl;
-			cout << endl << endl;
-
-			write_file << tmp_DB;
-			write_file.close();
-			system("pause");
+			tmp_DB += data;
+			tmp_DB += "\n";
+		}
+		for (unsigned short i = 0; i < Quantity_Products; i++)
+		{
+			tmp_DB += product[i].Get_Department();
+			tmp_DB += "\n";
+			tmp_DB += product[i].Get_Products_Name();
+			tmp_DB += "\n";
+			tmp_DB += to_string(product[i].Get_Quantity_in_stock());
+			tmp_DB += "\n";
+			tmp_DB += to_string(product[i].Get_Cost_in_CU());
+			tmp_DB += "\n";
+			tmp_DB += product[i].Get_Manufacturing_plant();
+			tmp_DB += "\n";
+			tmp_DB += product[i].Get_Description();
+			tmp_DB += "\n~\n";
+		}
+		tmp_DB += ".#\n";
+		while (getline(read_file, data))
+		{
+			tmp_DB += data;
+			tmp_DB += "\n";
+		}
+		read_file.close();
+		write_file.open(path);
+		write_file.close();
 		}
 	}
 	void W_W_D::upload_data(Product *&product, unsigned short &Quantity_Products)
 	{
+		system("cls");
 		unsigned short var = 0;
 		string path = "database.txt";
-		cout << "Use standard file - 1\nUse another file - 2\nExit - 0\n>";
-		cin >> var;
+		const unsigned short size = 3;
+		string menu[size]{ "Use standard file","Use another file","Exit" };
+		var = template_menu(menu, size);
 		if (var == 2)
 		{
 			cout << "Enter path> ";
 			cin >> path;
 		}
-		else if (var == 0)
+		else if (var == 3)
 		{
 			return;
 		}
 		system("cls");
-		cout << "Del all data and write new database=>1\nAdd data to data base=>2\n";
-		cin >> var;
+		const unsigned short size2 = 3;
+		string menu2[size2]{ "Del all data and write new database","Add data to data base","Exit" };
+		var = template_menu(menu2, size2);
+		if (var == 3)
+		{
+			return;
+		}
+		if (Quantity_Products == 0 && var != 1)
+		{
+			system("cls");
+			cout << char(7);
+			cout << "Error your local database is empty!\n";
+			for (unsigned short i = 0; i < 4; i++)
+			{
+				cout << ".";
+				Sleep(1000);
+			}
+			return;
+		}
 		system("cls");
 		string data;
 		ifstream read_file;
 		unsigned short i = 0;
+		read_file.open(path);
+		bool flag_1 = false;
+		bool flag_2 = false;
+		bool flag_3 = true;
+		while (read_file.eof() == 0)
+		{
+			getline(read_file, data);
+			if (data != ".#")
+			{
+				flag_2 = true;
+			}
+			else if (data == ".#")
+			{
+				flag_2 = false;
+				if (data != "~"&&flag_3==true)
+				{
+					flag_1 = true;
+				}
+				break;
+			}
+			if (data != "~")
+			{
+				flag_1 = true;
+			}
+			else if (data == "~")
+			{
+				flag_1 = false;
+				flag_3 = false;
+			}
+		}
+		if (flag_2==true)
+		{
+			cout << char(7);
+			cout << "Error, end of database not found\n";
+			for (unsigned short i = 0; i < 4; i++)
+			{
+				cout << ".";
+				Sleep(1000);
+			}
+			return;
+		}
+		else if (flag_1 == true)
+		{
+			system("cls");
+			cout << char(7);
+			cout << "Error, Database block not found\n";
+			for (unsigned short i = 0; i < 4; i++)
+			{
+				cout << ".";
+				Sleep(1000);
+			}
+			return;
+		}
+		read_file.close();
 		read_file.open(path);
 		unsigned short Quantity_in_database = 0;
 		for (unsigned short i = 0; true; i++)
@@ -518,7 +756,6 @@ using namespace std;
 			{
 				break;
 			}
-
 		}
 		read_file.close();
 		if (var == 1)
@@ -922,11 +1159,5 @@ using namespace std;
 			delete[] product;
 			product = new_product;
 			read_file.close();
-		}
-		else
-		{
-			cout << "Eror!!!\n";
-			Sleep(1000);
-			system("cls");
 		}
 	}

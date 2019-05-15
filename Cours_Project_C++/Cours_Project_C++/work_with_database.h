@@ -1,10 +1,11 @@
 #pragma once
 #include <string>
+#define Rate_of_conventional_units_ 20;
 using namespace std;
 class  Product
 {
 private:
-	const unsigned short Rate_of_conventional_units = 20;
+	const unsigned short Rate_of_conventional_units = Rate_of_conventional_units_;
 	float Cost_in_UAN;
 	std::string Department;
 	std::string Manufacturing_plant;
@@ -38,7 +39,9 @@ class W_W_D
 {
 	Menu_database menu_DB;
 public:
-	void Get_Memory(Product *&product, unsigned short &Quantity_Products);
+	unsigned short template_menu(std::string menu[], unsigned short size);
+	void write_block_database(Product *&product,unsigned short i = 0);
+	void Sampling_products(Product *&product, unsigned short &Quantity_Products);
 	void Add_item_Data_Product(Product *&product, unsigned short &Quantity_Products);
 	void reduct_product(Product *&product, unsigned short &Quantity_Products);
 	void search_product(Product *& product, unsigned short & Quantity_Products);
