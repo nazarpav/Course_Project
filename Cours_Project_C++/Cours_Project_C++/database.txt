@@ -4,18 +4,12 @@
 #(.#)-end all database
 ####################################################################
 Bread department
-1
-1
-1.000000
-1
-1
-~
-Bread department
 bread
-10
-2.230000
-12
-1
+13
+1.000000
+#20.000000
+rivne
+Good bread.
 ~
 .#
 ####################################################################
@@ -23,6 +17,7 @@ bread
 2 - "Products_name"
 3 - "Quantity in stock"
 4 - "Cost in CU"
+#4.a - "Cost in UAN"
 5 - "Manufacturing plant"
 6 - "Description"
 
